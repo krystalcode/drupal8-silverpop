@@ -1,0 +1,6 @@
+name: Silverpop
+type: module
+description: Provides communication with Silverpop web tracking API and XML API.
+core: 8.x
+package: Other
+configure: silverpop.settings
