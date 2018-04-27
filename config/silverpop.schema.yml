@@ -1,0 +1,22 @@
+silverpop.silverpop_settings.*:
+  type: config_entity
+  label: 'Silverpop Settings'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: string
+      label: 'Label'
+    event_type:
+      type: string
+      label: 'Event type'
+    css_selector:
+      type: string
+      label: 'CSS selector'
+    page_visibility:
+      type: string
+      label: 'Page visibility'
+    page_request_path:
+      type: string
+      label: 'Page request path'
