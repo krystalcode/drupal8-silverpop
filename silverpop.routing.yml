@@ -1,0 +1,7 @@
+silverpop.settings:
+  path: '/admin/config/services/silverpop'
+  defaults:
+    _form: 'Drupal\silverpop\Form\AdminSettingsForm'
+    _title: 'Silverpop'
+  requirements:
+    _permission: 'administer silverpop settings'

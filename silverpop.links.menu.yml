@@ -1,0 +1,13 @@
+silverpop.settings:
+  title: 'Silverpop'
+  parent: system.admin_config_services
+  description: 'Manage Silverpop admin settings.'
+  route_name: silverpop.settings
+  weight: 10
+
+entity.silverpop_settings.collection:
+  title: 'Silverpop settings'
+  parent: silverpop.settings
+  description: 'Manage Silverpop settings.'
+  route_name: entity.silverpop_settings.collection
+  weight: 10
