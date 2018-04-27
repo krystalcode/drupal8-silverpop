@@ -1,0 +1,5 @@
+services:
+  silverpop_event_subscriber:
+    class: Drupal\silverpop\EventSubscriber\SilverpopEventSubscriber
+    tags:
+      - {name: event_subscriber}
