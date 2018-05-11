@@ -5,31 +5,31 @@ namespace Drupal\silverpop\Entity;
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 
 /**
- * Defines the Silverpop settings configuration entity.
+ * Defines the Silverpop event type configuration entity.
  *
  * @ConfigEntityType(
- *   id = "silverpop_settings",
- *   label = @Translation("Silverpop Settings"),
- *   label_collection = @Translation("Silverpop Settings"),
- *   label_singular = @Translation("Silverpop Setting"),
- *   label_plural = @Translation("Silverpop Settings"),
+ *   id = "silverpop_event_type",
+ *   label = @Translation("Silverpop Event Type"),
+ *   label_collection = @Translation("Silverpop Event Type"),
+ *   label_singular = @Translation("Silverpop Event Type"),
+ *   label_plural = @Translation("Silverpop Event Types"),
  *   label_count = @PluralTranslation(
- *     singular = "@count Silverpop Setting",
- *     plural = "@count Silverpop Settings",
+ *     singular = "@count Silverpop Event Type",
+ *     plural = "@count Silverpop Event Types",
  *   ),
  *   handlers = {
- *     "list_builder" = "Drupal\silverpop\SilverpopSettingsListBuilder",
+ *     "list_builder" = "Drupal\silverpop\SilverpopEventTypeListBuilder",
  *     "form" = {
- *       "add" = "Drupal\silverpop\Form\SilverpopSettingsForm",
- *       "edit" = "Drupal\silverpop\Form\SilverpopSettingsForm",
+ *       "add" = "Drupal\silverpop\Form\SilverpopEventTypeForm",
+ *       "edit" = "Drupal\silverpop\Form\SilverpopEventTypeForm",
  *       "delete" = "Drupal\Core\Entity\EntityDeleteForm"
  *     },
  *     "route_provider" = {
  *       "default" = "Drupal\Core\Entity\Routing\DefaultHtmlRouteProvider",
  *     },
  *   },
- *   admin_permission = "administer silverpop settings",
- *   config_prefix = "silverpop_settings",
+ *   admin_permission = "administer silverpop event types",
+ *   config_prefix = "silverpop_event_type",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "event_name",
@@ -41,19 +41,20 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     "css_selector",
  *     "page_visibility",
  *     "page_request_path",
+ *     "data",
  *     "traits",
  *     "locked",
  *   },
  *   links = {
- *     "add-form" = "/admin/config/services/silverpop/settings/add",
+ *     "add-form" = "/admin/config/services/silverpop/event-type/add",
  *     "edit-form" =
- *   "/admin/config/services/silverpop/settings/{silverpop_settings}/edit",
- *     "delete-form" = "/admin/config/services/silverpop/settings/{silverpop_settings}/delete",
- *     "collection" = "/admin/config/services/silverpop/settings",
+ *   "/admin/config/services/silverpop/event-type/{silverpop_event_type}/edit",
+ *     "delete-form" = "/admin/config/services/silverpop/event-type/{silverpop_event_type}/delete",
+ *     "collection" = "/admin/config/services/silverpop/event-types",
  *   }
  * )
  */
-class SilverpopSettings extends ConfigEntityBase implements SilverpopSettingsInterface {
+class SilverpopEventType extends ConfigEntityBase implements SilverpopEventTypeInterface {
 
   /**
    * An event friendly name to track.
@@ -89,6 +90,13 @@ class SilverpopSettings extends ConfigEntityBase implements SilverpopSettingsInt
    * @var string
    */
   protected $page_request_path;
+
+  /**
+   * An associative array of info that should be passed with the event.
+   *
+   * @var array
+   */
+  protected $data;
 
   /**
    * {@inheritdoc}
@@ -158,6 +166,20 @@ class SilverpopSettings extends ConfigEntityBase implements SilverpopSettingsInt
    */
   public function getPageRequestPath() {
     return $this->page_request_path;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setData($data) {
+    $this->data = $data;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getData() {
+    return $this->data;
   }
 
   /**

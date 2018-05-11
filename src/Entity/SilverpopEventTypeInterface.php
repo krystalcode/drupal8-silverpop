@@ -5,11 +5,11 @@ namespace Drupal\silverpop\Entity;
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
 
 /**
- * Defines the configuration entity for Silverpop settings.
+ * Defines the configuration entity for Silverpop event type.
  *
  * Stores event IDs and classes for silverpop tracking.
  */
-interface SilverpopSettingsInterface extends ConfigEntityInterface {
+interface SilverpopEventTypeInterface extends ConfigEntityInterface {
 
   /**
    * Gets the event name.
@@ -100,5 +100,23 @@ interface SilverpopSettingsInterface extends ConfigEntityInterface {
    * @return $this
    */
   public function setPageVisibility($page_visibility);
+
+  /**
+   * Gets the associative data.
+   *
+   * @return array
+   *   The associative data array.
+   */
+  public function getData();
+
+  /**
+   * An array of data to pass along with the event to silverpop.
+   *
+   * @param array $data
+   *   The associative data array.
+   *
+   * @return $this
+   */
+  public function setData($data);
 
 }

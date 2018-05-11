@@ -1,6 +1,6 @@
-silverpop.silverpop_settings.*:
+silverpop.silverpop_event_type.*:
   type: config_entity
-  label: 'Silverpop Settings'
+  label: 'Silverpop Event Type'
   mapping:
     id:
       type: string
@@ -20,3 +20,6 @@ silverpop.silverpop_settings.*:
     page_request_path:
       type: string
       label: 'Page request path'
+    data:
+      type: array
+      label: 'Data'

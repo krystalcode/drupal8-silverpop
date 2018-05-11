@@ -8,12 +8,12 @@ use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Form controller for the silverpop_settings forms.
+ * Form controller for the silverpop_event_type forms.
  */
-class SilverpopSettingsForm extends EntityForm {
+class SilverpopEventTypeForm extends EntityForm {
 
   /**
-   * Constructs an SilverpopSettingsForm object.
+   * Constructs an SilverpopEventTypeForm object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
    *   The entityTypeManager.
@@ -37,8 +37,8 @@ class SilverpopSettingsForm extends EntityForm {
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
 
-    /** @var \Drupal\silverpop\Entity\SilverpopSettings $silverpop_settings */
-    $silverpop_settings = $this->entity;
+    /** @var \Drupal\silverpop\Entity\SilverpopEventType $silverpop_event_type */
+    $silverpop_event_type = $this->entity;
 
     // Event name.
     $form['label'] = [
@@ -46,16 +46,16 @@ class SilverpopSettingsForm extends EntityForm {
       '#title' => $this->t('Event Name (no spaces allowed)'),
       '#description' => $this->t('Add the name of the custom event you set up in Silverpop.'),
       '#maxlength' => 255,
-      '#default_value' => $silverpop_settings->getEventName(),
+      '#default_value' => $silverpop_event_type->getEventName(),
       '#required' => TRUE,
     ];
     $form['id'] = [
       '#type' => 'machine_name',
-      '#default_value' => $silverpop_settings->id(),
+      '#default_value' => $silverpop_event_type->id(),
       '#machine_name' => [
         'exists' => [$this, 'exist'],
       ],
-      '#disabled' => !$silverpop_settings->isNew(),
+      '#disabled' => !$silverpop_event_type->isNew(),
       '#description' => $this->t('A unique machine-readable name for this event.'),
     ];
 
@@ -65,7 +65,7 @@ class SilverpopSettingsForm extends EntityForm {
       '#title' => $this->t('Event Friendly Name'),
       '#description' => $this->t('Add the friendly name of the custom event you set up in Silverpop.'),
       '#maxlength' => 255,
-      '#default_value' => $silverpop_settings->getEventType(),
+      '#default_value' => $silverpop_event_type->getEventType(),
       '#required' => TRUE,
     ];
     // CSS Selector.
@@ -78,7 +78,7 @@ class SilverpopSettingsForm extends EntityForm {
         event.</strong>'
       ),
       '#maxlength' => 255,
-      '#default_value' => $silverpop_settings->getCssSelector(),
+      '#default_value' => $silverpop_event_type->getCssSelector(),
     ];
 
     $form['visibility_fieldset'] = [
@@ -89,7 +89,7 @@ class SilverpopSettingsForm extends EntityForm {
     $form['visibility_fieldset']['page_request_path'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Pages'),
-      '#default_value' => $silverpop_settings->getPageRequestPath(),
+      '#default_value' => $silverpop_event_type->getPageRequestPath(),
       '#description' => $this->t("Specify pages by using their paths. 
         Enter one path per line. The '*' character is a wildcard. An example 
         path is %user-wildcard for every user page. %front is the front page.
@@ -102,7 +102,7 @@ class SilverpopSettingsForm extends EntityForm {
     $form['visibility_fieldset']['page_visibility'] = [
       '#title' => $this->t('Pages'),
       '#type' => 'radios',
-      '#default_value' => !empty($silverpop_settings->getPageVisibility())
+      '#default_value' => !empty($silverpop_event_type->getPageVisibility())
         ?:
         0,
       '#title_display' => 'invisible',
@@ -121,18 +121,18 @@ class SilverpopSettingsForm extends EntityForm {
   public function save(array $form, FormStateInterface $form_state) {
     $this->entity->save();
 
-    drupal_set_message($this->t('Saved the %label silverpop setting.', [
+    drupal_set_message($this->t('Saved the %label silverpop event type.', [
       '%label' => $this->entity->label(),
     ]));
 
-    $form_state->setRedirect('entity.silverpop_settings.collection');
+    $form_state->setRedirect('entity.silverpop_event_type.collection');
   }
 
   /**
-   * Helper function to check whether a SilverpopSettings config entity exists.
+   * Helper function to check whether a SilverpopEventType config entity exists.
    */
   public function exist($id) {
-    $entity = $this->entityTypeManager->getStorage('silverpop_settings')->getQuery()
+    $entity = $this->entityTypeManager->getStorage('silverpop_event_type')->getQuery()
       ->condition('id', $id)
       ->execute();
     return (bool) $entity;
