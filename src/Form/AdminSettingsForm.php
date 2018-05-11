@@ -4,11 +4,11 @@ namespace Drupal\silverpop\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
-use Drupal\silverpop\Entity\SilverpopSettings;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Render\RendererInterface;
 
 /**
- * Manage silverpop settings for this site.
+ * Manage silverpop event types for this site.
  */
 class AdminSettingsForm extends ConfigFormBase {
 
@@ -27,11 +27,36 @@ class AdminSettingsForm extends ConfigFormBase {
   }
 
   /**
+   * The renderer.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * Constructs a ConfigTranslationController.
+   *
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer.
+   */
+  public function __construct(RendererInterface $renderer) {
+    $this->renderer = $renderer;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('renderer')
+    );
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('silverpop.admin_settings');
-    $renderer = \Drupal::service('renderer');
 
     $form['silverpop_tracking'] = [
       '#type' => 'fieldset',
@@ -50,7 +75,7 @@ class AdminSettingsForm extends ConfigFormBase {
 
     $form['silverpop_tracking']['silverpop_help'] = [
       '#markup' => '<p>You will need to grab two values from the Silverpop web tracking
-      code to add tracking to this website.</p><p>' . $renderer->render($tracking_image) . '</p>',
+      code to add tracking to this website.</p><p>' . $this->renderer->render($tracking_image) . '</p>',
     ];
 
     $form['silverpop_tracking']['silverpop_tracked_domains'] = [
@@ -71,16 +96,6 @@ class AdminSettingsForm extends ConfigFormBase {
       '#rows' => 2,
     ];
 
-    $form['silverpop_events'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Silverpop Event Tracking'),
-      '#collapsible' => TRUE,
-    ];
-
-    $form['silverpop_events']['table'] = [
-      '#markup' => $this->silverpopOverview(),
-    ];
-
     return parent::buildForm($form, $form_state);
   }
 
@@ -94,81 +109,6 @@ class AdminSettingsForm extends ConfigFormBase {
       ->save();
 
     parent::submitForm($form, $form_state);
-  }
-
-  /**
-   * Silverpop overview table.
-   */
-  public function silverpopOverview() {
-    $output = '';
-    $renderer = \Drupal::service('renderer');
-
-    // Fetch the existing events from the db.
-    $silverpop_settings = SilverpopSettings::loadMultiple();
-
-    $add_new = [
-      '#theme' => 'item_list',
-      '#items' => [
-        Link::createFromRoute(
-          $this->t('Add New'), 'entity.silverpop_settings.add_form'
-        ),
-      ],
-    ];
-
-    if (!count($silverpop_settings)) {
-      $output = '<p>No Silverpop event tracking set up.</p>';
-      $output .= $renderer->render($add_new);
-    }
-    else {
-      // Themes the events into a nice table.
-      $table = $this->displaySilverpopSettings($silverpop_settings);
-
-      $output .= $renderer->render($table);
-      $output .= $renderer->render($add_new);
-    }
-
-    return $output;
-  }
-
-  /**
-   * Themes the silverpop events into a themed table.
-   *
-   * @param array $silverpop_settings
-   *   An array of silverpop_settings entities.
-   *
-   * @return array
-   *   The themed table array.
-   */
-  function displaySilverpopSettings(array $silverpop_settings) {
-    $header = [
-      ['data' => t('Event Type')],
-      ['data' => t('Event Name')],
-      ['data' => ''],
-    ];
-
-    foreach ($silverpop_settings as $silverpop_setting) {
-      /** @var \Drupal\silverpop\Entity\SilverpopSettings $silverpop_setting */
-      $rows[] = [
-        ['data' => $silverpop_setting->getEventName()],
-        ['data' => $silverpop_setting->getEventType()],
-        [
-          'data' =>
-            Link::createFromRoute(
-              t('Edit'), 'entity.silverpop_settings.edit_form', [
-                'silverpop_settings' => $silverpop_setting->id(),
-              ]
-            ),
-        ],
-      ];
-    }
-
-    $table = [
-      '#theme' => 'table',
-      '#header' => $header,
-      '#rows' => $rows,
-    ];
-
-    return $table;
   }
 
 }
