@@ -1,5 +1,5 @@
-entity.silverpop_settings.add_form:
-  route_name: 'entity.silverpop_settings.add_form'
-  title: 'Add Silverpop Settings'
+entity.silverpop_event_type.add_form:
+  route_name: entity.silverpop_event_type.add_form
+  title: 'Add Silverpop event types'
   appears_on:
-    - entity.silverpop_settings.collection
+    - entity.silverpop_event_type.collection

@@ -1,2 +1,4 @@
-'administer silverpop settings':
-  title: 'Administer Silverpop settings'
+'administer silverpop':
+  title: 'Administer Silverpop'
+'administer silverpop event types':
+  title: 'Administer Silverpop event types'

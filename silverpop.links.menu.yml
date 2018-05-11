@@ -5,9 +5,9 @@ silverpop.settings:
   route_name: silverpop.settings
   weight: 10
 
-entity.silverpop_settings.collection:
-  title: 'Silverpop settings'
+entity.silverpop_event_type.collection:
+  title: 'Silverpop Event Types'
   parent: silverpop.settings
-  description: 'Manage Silverpop settings.'
-  route_name: entity.silverpop_settings.collection
+  description: 'Manage Silverpop event types.'
+  route_name: entity.silverpop_event_type.collection
   weight: 10

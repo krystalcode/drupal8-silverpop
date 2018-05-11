@@ -1,5 +1,6 @@
 services:
   silverpop_event_subscriber:
     class: Drupal\silverpop\EventSubscriber\SilverpopEventSubscriber
+    arguments: ['@config.factory', '@event_dispatcher']
     tags:
       - {name: event_subscriber}
