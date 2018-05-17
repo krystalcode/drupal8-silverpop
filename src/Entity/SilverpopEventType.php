@@ -28,28 +28,25 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *       "default" = "Drupal\Core\Entity\Routing\DefaultHtmlRouteProvider",
  *     },
  *   },
- *   admin_permission = "administer silverpop event types",
+ *   admin_permission = "administer silverpop_event_type",
  *   config_prefix = "silverpop_event_type",
  *   entity_keys = {
  *     "id" = "id",
- *     "label" = "event_name",
+ *     "label" = "label",
  *   },
  *   config_export = {
  *     "id",
  *     "label",
- *     "event_type",
+ *     "description",
  *     "css_selector",
  *     "page_visibility",
  *     "page_request_path",
  *     "data",
- *     "traits",
- *     "locked",
  *   },
  *   links = {
- *     "add-form" = "/admin/config/services/silverpop/event-type/add",
- *     "edit-form" =
- *   "/admin/config/services/silverpop/event-type/{silverpop_event_type}/edit",
- *     "delete-form" = "/admin/config/services/silverpop/event-type/{silverpop_event_type}/delete",
+ *     "add-form" = "/admin/config/services/silverpop/event-types/add",
+ *     "edit-form" = "/admin/config/services/silverpop/event-types/{silverpop_event_type}/edit",
+ *     "delete-form" = "/admin/config/services/silverpop/event-types/{silverpop_event_type}/delete",
  *     "collection" = "/admin/config/services/silverpop/event-types",
  *   }
  * )
@@ -57,18 +54,35 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
 class SilverpopEventType extends ConfigEntityBase implements SilverpopEventTypeInterface {
 
   /**
-   * An event friendly name to track.
+   * Indicates that an event should be included in the defined paths.
+   */
+  const PAGE_VISIBILITY_INCLUDE = 0;
+
+  /**
+   * Indicates that an event should be excluded from the defined paths.
+   */
+  const PAGE_VISIBILITY_EXCLUDE = 1;
+
+  /**
+   * The configuration entity ID.
+   *
+   * @var string
+   */
+  protected $id;
+
+  /**
+   * A human-friendly label for the event.
    *
    * @var string
    */
   protected $label;
 
   /**
-   * An event type to track.
+   * A description for the event.
    *
    * @var string
    */
-  protected $event_type;
+  protected $description;
 
   /**
    * CSS selector of site link to track clicks.
@@ -78,21 +92,21 @@ class SilverpopEventType extends ConfigEntityBase implements SilverpopEventTypeI
   protected $css_selector;
 
   /**
-   * CSS selector of site link to track clicks.
+   * Whether to include the event on the denoted pages or exclude.
    *
    * @var string
    */
   protected $page_visibility;
 
   /**
-   * CSS selector of site link to track clicks.
+   * The paths this event should be included in/excluded from.
    *
    * @var string
    */
   protected $page_request_path;
 
   /**
-   * An associative array of info that should be passed with the event.
+   * An associative array of data that should be passed with the event.
    *
    * @var array
    */
@@ -101,29 +115,24 @@ class SilverpopEventType extends ConfigEntityBase implements SilverpopEventTypeI
   /**
    * {@inheritdoc}
    */
-  public function setEventName($label) {
+  public function setLabel($label) {
     $this->label = $label;
+    return $this;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getEventName() {
-    return $this->label;
+  public function getDescription() {
+    return $this->description;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setEventType($event_type) {
-    $this->event_type = $event_type;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getEventType() {
-    return $this->event_type;
+  public function setDescription($description) {
+    $this->description = $description;
+    return $this;
   }
 
   /**
@@ -193,8 +202,8 @@ class SilverpopEventType extends ConfigEntityBase implements SilverpopEventTypeI
    */
   public function mapPageVisibility($key) {
     $map_array = [
-      0 => 'Include on the selected pages',
-      1 => 'Omit from the selected pages',
+      self::PAGE_VISIBILITY_INCLUDE => 'Include on the selected pages',
+      self::PAGE_VISIBILITY_EXCLUDE => 'Omit from the selected pages',
     ];
 
     return $map_array[$key];

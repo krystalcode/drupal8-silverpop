@@ -15,7 +15,7 @@ class SilverpopEventTypeListBuilder extends ConfigEntityListBuilder {
    */
   public function buildHeader() {
     $header['label'] = $this->t('Event Name');
-    $header['event_type'] = $this->t('Event Type');
+    $header['id'] = $this->t('Event Type');
     $header['css_selector'] = $this->t('CSS Selector');
     $header['page_request_path'] = $this->t('Page Request Path');
     $header['page_visibility'] = $this->t('Page Visibility');
@@ -28,8 +28,8 @@ class SilverpopEventTypeListBuilder extends ConfigEntityListBuilder {
    */
   public function buildRow(EntityInterface $entity) {
     /** @var \Drupal\silverpop\Entity\SilverpopEventTypeInterface $entity */
-    $row['label'] = $entity->getEventName();
-    $row['event_type'] = $entity->getEventType();
+    $row['label'] = $entity->label();
+    $row['id'] = $entity->id();
     $row['css_selector'] = $entity->getCssSelector();
     $row['page_request_path'] = $entity->getPageRequestPath();
     $row['page_visibility'] = $entity->mapPageVisibility($entity->getPageVisibility());

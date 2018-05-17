@@ -8,14 +8,11 @@ silverpop.silverpop_event_type.*:
     label:
       type: string
       label: 'Label'
-    event_type:
-      type: string
-      label: 'Event type'
     css_selector:
       type: string
       label: 'CSS selector'
     page_visibility:
-      type: string
+      type: int
       label: 'Page visibility'
     page_request_path:
       type: string

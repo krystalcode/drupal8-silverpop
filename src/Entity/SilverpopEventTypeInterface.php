@@ -3,49 +3,22 @@
 namespace Drupal\silverpop\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
+use Drupal\Core\Entity\EntityDescriptionInterface;
 
 /**
- * Defines the configuration entity for Silverpop event type.
- *
- * Stores event IDs and classes for silverpop tracking.
+ * Defines the interface for Silverpop event types.
  */
-interface SilverpopEventTypeInterface extends ConfigEntityInterface {
+interface SilverpopEventTypeInterface extends ConfigEntityInterface, EntityDescriptionInterface {
 
   /**
-   * Gets the event name.
-   *
-   * @return string
-   *   The event name.
-   */
-  public function getEventName();
-
-  /**
-   * Sets the event name.
+   * Sets the label.
    *
    * @param string $label
-   *   The event name.
+   *   The label of the event.
    *
    * @return $this
    */
-  public function setEventName($label);
-
-  /**
-   * Gets the event type.
-   *
-   * @return string
-   *   The event type.
-   */
-  public function getEventType();
-
-  /**
-   * Sets the event type.
-   *
-   * @param string $event_type
-   *   The event type.
-   *
-   * @return $this
-   */
-  public function setEventType($event_type);
+  public function setLabel($label);
 
   /**
    * Gets the CSS selector.

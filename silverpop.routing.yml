@@ -12,4 +12,4 @@ entity.silverpop_event_type.collection:
     _entity_list: 'silverpop_event_type'
     _title: 'Silverpop event types'
   requirements:
-    _permission: 'administer silverpop event types'
+    _permission: 'administer silverpop_event_type'
