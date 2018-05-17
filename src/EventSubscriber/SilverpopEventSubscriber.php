@@ -8,6 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\silverpop\Event\SilverpopEvent;
+use Drupal\silverpop\Event\SilverpopEvents;
 
 /**
  * Redirect .html pages to corresponding Node page.
@@ -57,7 +58,7 @@ class SilverpopEventSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     $events = [
       KernelEvents::RESPONSE => ['onReponse'],
-      'silverpop_event_type.event.before_submit' => ['onBeforeSubmitEvent'],
+      SilverpopEvents::BEFORE_SUBMIT => ['onBeforeSubmitEvent'],
     ];
 
     return $events;
@@ -72,61 +73,6 @@ class SilverpopEventSubscriber implements EventSubscriberInterface {
    *   The FilterReponseEvent event.
    */
   public function onReponse(FilterResponseEvent $event) {
-    //$config = \Drupal::config('silverpop.admin_settings');
-    //$domains = $config->get('silverpop_tracked_domains');
-
-    // Create our event class object.
-    $event = new SilverpopEvent();
-    // Now, dispatch.
-    $this->eventDispatcher->dispatch(SilverpopEvent::BEFORE_SUBMIT, $event);
-
-    // Add Silverpop page tracking.
-    /*if ($domains) {
-      $meta = array(
-        '#tag' => 'meta',
-        '#attributes' => array(
-          'name' => 'com.silverpop.brandeddomains',
-          'content' => $domains,
-        ),
-      );
-
-      drupal_add_html_head($meta, 'silverpop_webtracking_metatag');
-    }
-
-    // Add custom page name meta tag for Silverpop web tracking summary report.
-    $meta_page_name = array(
-      '#tag' => 'meta',
-      '#attributes' => array(
-        'name' => 'com.silverpop.pagename',
-        'content' => drupal_get_title(),
-      ),
-    );
-    drupal_add_html_head($meta_page_name, 'silverpop_webtracking_page_name');
-
-    $tracking_source = variable_get('silverpop_script_src', '');
-
-    if ($tracking_source) {
-      drupal_add_js($tracking_source, 'external');
-    }
-
-    // Add event tracking.
-    $result = db_query("SELECT * FROM {silverpop_settings}");
-
-    foreach ($result as $row) {
-      $event_name = check_plain($row->event_name);
-      $event_type = check_plain($row->event_type);
-      $css_selector = check_plain($row->css_selector);
-
-      $tracking_js = "return ewt.trackLink({name:'$event_name',type:'$event_type',link:this });";
-
-      drupal_add_js("jQuery('$css_selector').click(function () { $tracking_js });",
-        array('type' => 'inline', 'scope' => 'footer', 'weight' => 5)
-      );
-    }
-
-    $response = $event->getResponse();
-    kint($response);
-    $response->headers->set('X-Custom-Header', 'MyValue');*/
   }
 
   /**
