@@ -2,16 +2,41 @@
 
 namespace Drupal\silverpop\Event;
 
+use Drupal\silverpop\Entity\SilverpopEventTypeInterface;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Defines the Silverpop event event.
+ *
+ * @see \Drupal\silverpop\Event\SilverpopEvents
+ */
 class SilverpopEvent extends Event {
 
   /**
-   * Submit a silverpop event.
+   * The Silverpop event type.
    *
-   * Fired before the event is sent to silverpop.
-   *
-   * @Event
+   * @var \Drupal\silverpop\Entity\SilverpopEventTypeInterface
    */
-  const BEFORE_SUBMIT = 'silverpop_event_type.event.before_submit';
+  protected $silverpopEventType;
+
+  /**
+   * Constructs a new SilverpopEvent.
+   *
+   * @param \Drupal\silverpop\Entity\SilverpopEventTypeInterface $silverpop_event_type
+   *   The Silverpop event type.
+   */
+  public function __construct($silverpop_event_type) {
+    $this->silverpopEvent_type = $silverpop_event_type;
+  }
+
+  /**
+   * Gets the Silverpop event type.
+   *
+   * @return \Drupal\silverpop\Entity\SilverpopEventTypeInterface
+   *   Gets the Silverpop event type.
+   */
+  public function getSilverpopEventType() {
+    return $this->silverpopEventType;
+  }
+
 }
