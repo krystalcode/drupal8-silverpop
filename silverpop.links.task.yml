@@ -1,10 +1,11 @@
 silverpop.settings:
-  title: 'Silverpop Settings'
+  title: 'Silverpop settings'
   route_name: silverpop.settings
   base_route: silverpop.settings
-  description: 'Silverpop Admin Settings'
+  description: 'Administer Silverpop integration settings.'
 
 entity.silverpop_event_type.collection:
-  title: 'Silverpop Event Types'
+  title: 'Silverpop event types'
   route_name: entity.silverpop_event_type.collection
   base_route: silverpop.settings
+  description: 'Create and manage Silverpop event types.'

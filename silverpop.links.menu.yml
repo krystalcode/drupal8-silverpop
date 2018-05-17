@@ -1,13 +1,13 @@
 silverpop.settings:
   title: 'Silverpop'
   parent: system.admin_config_services
-  description: 'Manage Silverpop admin settings.'
+  description: 'Administer Silverpop integration settings.'
   route_name: silverpop.settings
   weight: 10
 
 entity.silverpop_event_type.collection:
-  title: 'Silverpop Event Types'
+  title: 'Silverpop event types'
   parent: silverpop.settings
-  description: 'Manage Silverpop event types.'
+  description: 'Create and manage Silverpop event types.'
   route_name: entity.silverpop_event_type.collection
   weight: 10

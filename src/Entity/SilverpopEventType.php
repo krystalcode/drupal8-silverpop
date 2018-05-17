@@ -9,13 +9,13 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *
  * @ConfigEntityType(
  *   id = "silverpop_event_type",
- *   label = @Translation("Silverpop Event Type"),
- *   label_collection = @Translation("Silverpop Event Type"),
- *   label_singular = @Translation("Silverpop Event Type"),
- *   label_plural = @Translation("Silverpop Event Types"),
+ *   label = @Translation("Silverpop event type"),
+ *   label_collection = @Translation("Silverpop event type"),
+ *   label_singular = @Translation("Silverpop event type"),
+ *   label_plural = @Translation("Silverpop event types"),
  *   label_count = @PluralTranslation(
- *     singular = "@count Silverpop Event Type",
- *     plural = "@count Silverpop Event Types",
+ *     singular = "@count Silverpop event type",
+ *     plural = "@count Silverpop event types",
  *   ),
  *   handlers = {
  *     "list_builder" = "Drupal\silverpop\SilverpopEventTypeListBuilder",

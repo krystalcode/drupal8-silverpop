@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Render\RendererInterface;
 
 /**
- * Manage silverpop event types for this site.
+ * Manage Silverpop integration settings for this site.
  */
 class AdminSettingsForm extends ConfigFormBase {
 
