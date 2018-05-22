@@ -1,0 +1,11 @@
+{
+    "name": "drupal/silverpop",
+    "type": "drupal-module",
+    "description": "A Drupal 8 module that provides integration between Drupal and Silverpop.",
+    "homepage": "https://www.drupal.org/sandbox/shabanablackborder/2966348",
+    "license": "GPL-2.0+",
+    "require": {
+        "drupal/core": "~8.4"
+    },
+    "minimum-stability": "dev"
+}
