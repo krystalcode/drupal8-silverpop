@@ -1,0 +1,12 @@
+silverpop:
+  version: VERSION
+  js:
+    js/silverpop.js: {}
+  drupalSettings:
+    silverpop:
+        events: null
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/drupalSettings

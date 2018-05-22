@@ -25,8 +25,8 @@ class SilverpopEvent extends Event {
    * @param \Drupal\silverpop\Entity\SilverpopEventTypeInterface $silverpop_event_type
    *   The Silverpop event type.
    */
-  public function __construct($silverpop_event_type) {
-    $this->silverpopEvent_type = $silverpop_event_type;
+  public function __construct(SilverpopEventTypeInterface $silverpop_event_type) {
+    $this->silverpopEventType = $silverpop_event_type;
   }
 
   /**

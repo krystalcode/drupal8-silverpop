@@ -180,7 +180,7 @@ class SilverpopEventType extends ConfigEntityBase implements SilverpopEventTypeI
   /**
    * {@inheritdoc}
    */
-  public function setData($data) {
+  public function setData(array $data) {
     $this->data = $data;
   }
 

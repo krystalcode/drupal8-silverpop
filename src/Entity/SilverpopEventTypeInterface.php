@@ -90,6 +90,6 @@ interface SilverpopEventTypeInterface extends ConfigEntityInterface, EntityDescr
    *
    * @return $this
    */
-  public function setData($data);
+  public function setData(array $data);
 
 }
