@@ -6,6 +6,7 @@ use Drupal\silverpop\Entity\SilverpopEventType;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\RendererInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -21,13 +22,21 @@ class SilverpopEventTypeForm extends EntityForm {
   protected $entityTypeManager;
 
   /**
+   * The renderer.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
    * Constructs an SilverpopEventTypeForm object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entityTypeManager.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, RendererInterface $renderer) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->renderer = $renderer;
   }
 
   /**
@@ -35,7 +44,8 @@ class SilverpopEventTypeForm extends EntityForm {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('renderer')
     );
   }
 
@@ -47,6 +57,23 @@ class SilverpopEventTypeForm extends EntityForm {
 
     /** @var \Drupal\silverpop\Entity\SilverpopEventType $silverpop_event_type */
     $silverpop_event_type = $this->entity;
+
+    $event_image_example_url = drupal_get_path('module', 'silverpop') . '/images/silverpop-web-tracking-events.png';
+
+    $event_image = [
+      '#theme' => 'image',
+      '#attributes' => ['style' => 'border: 1px solid #666; width: 50%;'],
+      '#alt' => $this->t('Custom Web Tracking Events example.'),
+      '#uri' => $event_image_example_url,
+    ];
+
+    $form['silverpop_help'] = [
+      '#markup' => 'You will need to set up custom events in Silverpop and
+      associate them here.<br />
+      @see <a target="_blank" href="https://pilot.silverpop.com/viewOrganization.do">
+      https://pilot.silverpop.com/viewOrganization.do</a></p>
+      <p>' . $this->renderer->render($event_image) . '</p>',
+    ];
 
     // Event ID; we already have the event type set in Silverpop as a unique
     // identifier so we don't need to create a machine name as an ID.
