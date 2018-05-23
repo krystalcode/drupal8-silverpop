@@ -102,8 +102,7 @@ class SilverpopEventTypeForm extends EntityForm {
       '#title' => $this->t('CSS Selector'),
       '#description' => $this->t('This is the CSS selector that will add
         Silverpop tracking. Examples are CSS id\'s (e.g. "#foobar") or class
-        names (e.g. ".foobar"). <br><strong>Leave empty if this is a page tracking
-        event.</strong>'
+        names (e.g. ".foobar"). <br>'
       ),
       '#maxlength' => 255,
       '#default_value' => $silverpop_event_type->getCssSelector(),
