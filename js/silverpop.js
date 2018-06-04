@@ -9,11 +9,21 @@
         // the click event for that particular selector.
         $.each(drupalSettings.silverpop.events, function(index, silverpopEvent) {
           $(silverpopEvent.cssSelector).click(function () {
+            // Add the basic event specific elements.
+            var trackingArray = {
+              name: silverpopEvent.name,
+              type: silverpopEvent.type,
+              link: this
+            };
+
+            // Now, add each custom data element for the event.
+            $.each(silverpopEvent.data, function (key, value) {
+              trackingArray[key] = value;
+            });
+
+            // Now, send the tracking data.
             return ewt.trackLink({
-              name:silverpopEvent.name,
-              type:silverpopEvent.type,
-              data:silverpopEvent.data,
-              link:$(this)
+              trackingArray
             });
           });
 
