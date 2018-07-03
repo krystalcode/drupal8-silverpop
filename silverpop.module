@@ -22,6 +22,13 @@ use Drupal\Component\Utility\Unicode;
  * This is where we actually send out the event/page tracking data to Silverpop.
  */
 function silverpop_page_attachments(array &$attachments) {
+  // Don't process further if the user has disabled Silverpop tracking.
+  $config = \Drupal::service('config.factory')
+    ->get('silverpop.admin_settings');
+  if (!$config->get('status')) {
+    return;
+  }
+
   if (!$enabled_events = _silverpop_get_events_enabled_for_current_page()) {
     return;
   }
@@ -138,8 +145,14 @@ function silverpop_library_info_build() {
   // Load our external silverpop js with the url from silverpop.admin_settings.
   $config = \Drupal::service('config.factory')
     ->get('silverpop.admin_settings');
-  $silverpop_js_src = $config->get('silverpop_script_src');
 
+  // Don't process further if the user has disabled Silverpop tracking.
+  if (!$config->get('status')) {
+    return;
+  }
+
+  // Don't process further if we don't have a script file.
+  $silverpop_js_src = $config->get('silverpop_script_src');
   if (!$silverpop_js_src) {
     return;
   }

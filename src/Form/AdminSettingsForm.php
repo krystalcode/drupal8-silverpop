@@ -96,6 +96,15 @@ class AdminSettingsForm extends ConfigFormBase {
       '#rows' => 2,
     ];
 
+    // Status defaults to enabled.
+    $form['silverpop_tracking']['silverpop_enable_tracking'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable Silverpop tracking'),
+      '#default_value' => $config->get('status'),
+      '#description' => $this->t('When disabled, no tracking will be made
+       and no event types will be loaded on any page.'),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -106,6 +115,7 @@ class AdminSettingsForm extends ConfigFormBase {
     $this->config('silverpop.admin_settings')
       ->set('silverpop_tracked_domains', $form_state->getValue('silverpop_tracked_domains'))
       ->set('silverpop_script_src', $form_state->getValue('silverpop_script_src'))
+      ->set('status', $form_state->getValue('silverpop_enable_tracking'))
       ->save();
 
     parent::submitForm($form, $form_state);
