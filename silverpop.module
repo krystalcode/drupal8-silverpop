@@ -125,13 +125,17 @@ function _silverpop_add_event_tracking(array &$attachments, array $enabled_event
     // Dispatch the event.
     $dispatcher->dispatch(SilverpopEvents::BEFORE_SUBMIT, $event);
 
+    // Process the data that should be sent with this event.
+    $service = \Drupal::service('silverpop.silverpop');
+    $data = $service->replaceDataTokens($event_type->getData());
+
     // Finally, add the tracking info in the drupalSettings so our js library
     // can pick it up.
     $tracking_js = [
       'name' => $event_type->label(),
       'type' => $event_type->id(),
       'cssSelector' => $css_selector,
-      'data' => $event_type->getData(),
+      'data' => $data,
     ];
 
     $attachments['#attached']['drupalSettings']['silverpop']['events'][$event_type->id()] = $tracking_js;

@@ -108,6 +108,24 @@ class SilverpopEventTypeForm extends EntityForm {
       '#default_value' => $silverpop_event_type->getCssSelector(),
     ];
 
+    // Custom data.
+    $data_description_help = $this->t(
+      'Enter any extra data to send along with the event. Data should be entered
+      as key|value pairs, each on its own line. Eg. user_name|[user:name]'
+    );
+    $data_token_help = $this->t(
+      'Tokens are accepted. Available variables are:
+      [site:*],
+      [user:*].'
+    );
+    $data_default_value = implode("\n", $silverpop_event_type->getData());
+    $form['data'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Data'),
+      '#default_value' => $data_default_value,
+      '#description' => $data_description_help . '<br>' . $data_token_help,
+    ];
+
     $form['visibility_fieldset'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Visibility'),
@@ -173,6 +191,10 @@ class SilverpopEventTypeForm extends EntityForm {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
+    // Save the data as an array.
+    $data = preg_split('(\r\n?|\n)', $form_state->getValue('data'));
+    $this->entity->setData($data);
+
     $this->entity->save();
 
     drupal_set_message($this->t('Saved the %label Silverpop event type.', [

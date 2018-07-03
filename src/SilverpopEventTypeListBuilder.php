@@ -27,14 +27,20 @@ class SilverpopEventTypeListBuilder extends ConfigEntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    /** @var \Drupal\silverpop\Entity\SilverpopEventTypeInterface $entity */
-    $row['label'] = $entity->label();
-    $row['id'] = $entity->id();
-    $row['css_selector'] = $entity->getCssSelector();
-    $row['page_request_path'] = $entity->getPageRequestPath();
-    $row['page_visibility'] = $entity->mapPageVisibility($entity->getPageVisibility());
+    /** @var \Drupal\silverpop\Entity\SilverpopEventTypeInterface $event_type */
+    $event_type = $entity;
 
-    return $row + parent::buildRow($entity);
+    $row['label'] = $event_type->label();
+    $row['id'] = $event_type->id();
+    $row['css_selector'] = $event_type->getCssSelector();
+    $row['page_request_path'] = $event_type->getPageRequestPath();
+
+    $row['page_visibility'] = $this->t('Include on all pages');
+    if (!empty($event_type->getPageRequestPath())) {
+      $row['page_visibility'] = $event_type->mapPageVisibility($event_type->getPageVisibility());
+    }
+
+    return $row + parent::buildRow($event_type);
   }
 
 }
