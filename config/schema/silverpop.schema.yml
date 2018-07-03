@@ -17,6 +17,3 @@ silverpop.silverpop_event_type.*:
     page_request_path:
       type: string
       label: 'Page request path'
-    data:
-      type: array
-      label: 'Data'

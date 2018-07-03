@@ -16,11 +16,6 @@
               link: this
             };
 
-            // Now, add each custom data element for the event.
-            $.each(silverpopEvent.data, function (key, value) {
-              trackingArray[key] = value;
-            });
-
             // Now, send the tracking data.
             return ewt.trackLink({
               trackingArray

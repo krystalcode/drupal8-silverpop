@@ -41,7 +41,6 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     "css_selector",
  *     "page_visibility",
  *     "page_request_path",
- *     "data",
  *   },
  *   links = {
  *     "add-form" = "/admin/config/services/silverpop/event-types/add",
@@ -106,13 +105,6 @@ class SilverpopEventType extends ConfigEntityBase implements SilverpopEventTypeI
   protected $page_request_path;
 
   /**
-   * An associative array of data that should be passed with the event.
-   *
-   * @var array
-   */
-  protected $data;
-
-  /**
    * {@inheritdoc}
    */
   public function setLabel($label) {
@@ -175,20 +167,6 @@ class SilverpopEventType extends ConfigEntityBase implements SilverpopEventTypeI
    */
   public function getPageRequestPath() {
     return $this->page_request_path;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setData(array $data) {
-    $this->data = $data;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getData() {
-    return $this->data;
   }
 
   /**

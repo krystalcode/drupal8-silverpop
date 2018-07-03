@@ -74,22 +74,4 @@ interface SilverpopEventTypeInterface extends ConfigEntityInterface, EntityDescr
    */
   public function setPageVisibility($page_visibility);
 
-  /**
-   * Gets the associative data.
-   *
-   * @return array
-   *   The associative data array.
-   */
-  public function getData();
-
-  /**
-   * An array of data to pass along with the event to silverpop.
-   *
-   * @param array $data
-   *   The associative data array.
-   *
-   * @return $this
-   */
-  public function setData(array $data);
-
 }

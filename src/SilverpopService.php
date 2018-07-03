@@ -8,8 +8,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Path\AliasManagerInterface;
 use Drupal\Core\Path\CurrentPathStack;
 use Drupal\Core\Path\PathMatcherInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Utility\Token;
 
 /**
  * A utility service providing functionality related to the silverpop module.
@@ -22,20 +20,6 @@ class SilverpopService {
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
-
-  /**
-   * The token replacement utility class.
-   *
-   * @var \Drupal\Core\Utility\Token
-   */
-  protected $token;
-
-  /**
-   * The current user.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected $account;
 
   /**
    * The current path service.
@@ -63,10 +47,6 @@ class SilverpopService {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param \Drupal\Core\Utility\Token $token
-   *   The token replacement utility class.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The current user account.
    * @param \Drupal\Core\Path\CurrentPathStack $current_path
    *   The current path.
    * @param \Drupal\Core\Path\AliasManagerInterface $alias_manager
@@ -74,41 +54,11 @@ class SilverpopService {
    * @param \Drupal\Core\Path\PathMatcherInterface $path_matcher
    *   The path matcher service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, Token $token, AccountInterface $account, CurrentPathStack $current_path, AliasManagerInterface $alias_manager, PathMatcherInterface $path_matcher = NULL) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, CurrentPathStack $current_path, AliasManagerInterface $alias_manager, PathMatcherInterface $path_matcher = NULL) {
     $this->entityTypeManager = $entity_type_manager;
-    $this->token = $token;
-    $this->account = $account;
     $this->currentPath = $current_path;
     $this->aliasManager = $alias_manager;
     $this->pathMatcher = $path_matcher ?: \Drupal::service('path.matcher');
-  }
-
-  /**
-   * Replaces tokens in the given event type data array.
-   *
-   * @param array $data
-   *   An array containing key-value pairs for an event type.
-   *
-   * @return array
-   *   The array with its tokens replaced.
-   */
-  public function replaceDataTokens(array $data) {
-    if (empty($data)) {
-      return [];
-    }
-
-    return array_reduce(
-      $data,
-      function ($carry, $item) {
-        $item_parts = explode('|', $item);
-        $carry[$item_parts[0]] = $this->token->replace(
-          $item_parts[1],
-          ['user' => $this->account]
-        );
-        return $carry;
-      },
-      []
-    );
   }
 
   /**
