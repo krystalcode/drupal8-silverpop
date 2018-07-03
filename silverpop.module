@@ -5,11 +5,9 @@
  * Code for the silverpop module.
  */
 
-use Drupal\silverpop\Entity\SilverpopEventType;
 use Drupal\silverpop\Event\SilverpopEvent;
 use Drupal\silverpop\Event\SilverpopEvents;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
-use Drupal\Component\Utility\Unicode;
 
 /**
  * @file
@@ -29,7 +27,8 @@ function silverpop_page_attachments(array &$attachments) {
     return;
   }
 
-  if (!$enabled_events = _silverpop_get_events_enabled_for_current_page()) {
+  $service = \Drupal::service('silverpop.silverpop');
+  if (!$enabled_events = $service->silverpopGetEventsEnabledForCurrentPage()) {
     return;
   }
 
@@ -43,7 +42,7 @@ function silverpop_page_attachments(array &$attachments) {
   $attachments['#attached']['library'][] = 'silverpop/silverpop';
 
   // Event tracking.
-  _silverpop_add_event_tracking($attachments, $enabled_events);
+  _silverpop_add_event_tracking($attachments, $enabled_events, $service);
 }
 
 /**
@@ -109,8 +108,10 @@ function _silverpop_add_web_tracking(array &$attachments) {
  *   The page attachments array.
  * @param array $enabled_events
  *   An array of silverpop_event_type entities.
+ * @param object $service
+ *   The silverpop service object.
  */
-function _silverpop_add_event_tracking(array &$attachments, array $enabled_events) {
+function _silverpop_add_event_tracking(array &$attachments, array $enabled_events, $service) {
   foreach ($enabled_events as $event_type) {
     /** @var \Drupal\silverpop\Entity\SilverpopEventType $event_type */
     // An empty CSS selector denotes that this event is a page tracking event.
@@ -126,7 +127,6 @@ function _silverpop_add_event_tracking(array &$attachments, array $enabled_event
     $dispatcher->dispatch(SilverpopEvents::BEFORE_SUBMIT, $event);
 
     // Process the data that should be sent with this event.
-    $service = \Drupal::service('silverpop.silverpop');
     $data = $service->replaceDataTokens($event_type->getData());
 
     // Finally, add the tracking info in the drupalSettings so our js library
@@ -175,74 +175,4 @@ function silverpop_library_info_build() {
   ];
 
   return $libraries;
-}
-
-/**
- * Fetch event tracking info for the current page.
- *
- * Based on visibility setting this function returns the events that should be
- * tracked in the current page.
- *
- * @return array
- *   The array of silverpop_event_type objects.
- */
-function _silverpop_get_events_enabled_for_current_page() {
-  static $events_for_page;
-
-  // Cache visibility result if function is called more than once.
-  if (isset($events_for_page)) {
-    return $events_for_page;
-  }
-
-  $events_for_page = [];
-  $event_types = \Drupal::service('entity_type.manager')
-    ->getStorage('silverpop_event_type')
-    ->loadMultiple();
-
-  $path = \Drupal::service('path.current')->getPath();
-  $path_alias = Unicode::strtolower(
-    \Drupal::service('path.alias_manager')
-      ->getAliasByPath($path)
-  );
-  foreach ($event_types as $event_type) {
-    /** @var \Drupal\silverpop\Entity\SilverpopEventType $event_type */
-    $visibility_request_path_mode = $event_type->getPageVisibility();
-    $visibility_request_path_pages = $event_type->getPageRequestPath();
-
-    // If we don't have any paths, add tracking for this event for this page.
-    if (empty($visibility_request_path_pages)) {
-      $events_for_page[$event_type->id()] = $event_type;
-      continue;
-    }
-
-    // Match all paths.
-    $page_match = FALSE;
-    $paths = preg_split("(\r\n?|\n)", $visibility_request_path_pages);
-    foreach ($paths as $key => $path) {
-      $paths[$key] = $path === '<front>'
-        ? $path
-        : '/' . ltrim($path, '/');
-    }
-
-    // Check if the current page matches any of the include paths.
-    foreach ($paths as $page) {
-      $page_match = \Drupal::service('path.matcher')
-        ->matchPath($path_alias, $page)
-        || (($path != $path_alias)
-          && \Drupal::service('path.matcher')->matchPath($path, $page));
-
-      // When $visibility_request_path_mode has a value of 0, the tracking
-      // code is displayed on all pages except those listed in $paths. When
-      // set to 1, it is displayed only on those pages listed in $paths.
-      if ($page_match && $visibility_request_path_mode == SilverpopEventType::PAGE_VISIBILITY_EXCLUDE) {
-        $page_match = FALSE;
-      }
-    }
-
-    if ($page_match) {
-      $events_for_page[$event_type->id()] = $event_type;
-    }
-  }
-
-  return $events_for_page;
 }

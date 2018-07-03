@@ -1,4 +1,4 @@
 services:
   silverpop.silverpop:
     class: Drupal\silverpop\SilverpopService
-    arguments: ['@token', '@current_user']
+    arguments: ['@entity_type.manager', '@token', '@current_user', '@path.current', '@path.alias_manager', '@path.matcher']
